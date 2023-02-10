@@ -11,4 +11,32 @@ public class Main implements MouseListener, ActionListener, KeyListener
     {
         
     }
+
+    public void mousePressed(MouseEvent evt)
+    {}
+
+    public void mouseClicked(MouseEvent evt)
+    {}
+
+    public void mouseReleased(MouseEvent evt)
+    {}
+
+    public void mouseEntered(MouseEvent evt)
+    {}
+
+    public void mouseExited(MouseEvent evt)
+    {}
+
+    public void actionPerformed(ActionEvent event)
+    {}
+
+    public void keyPressed(KeyEvent evt)
+    {}
+
+    public void keyReleased(KeyEvent evt)
+    {}
+
+    public void keyTyped(KeyEvent evt)
+    {}
+    
 }
