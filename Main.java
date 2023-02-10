@@ -12,6 +12,7 @@ public class Main implements MouseListener, ActionListener, KeyListener
         
     }
 
+    //the main Event listeners I plan to use are MouseClicked and ActionPerformed. If I have the time I would also like to add some keylistener functions, like p to pause
     public void mousePressed(MouseEvent evt)
     {}
 
@@ -38,5 +39,5 @@ public class Main implements MouseListener, ActionListener, KeyListener
 
     public void keyTyped(KeyEvent evt)
     {}
-    
+
 }
