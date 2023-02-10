@@ -5,8 +5,9 @@ public class Locations
     int x, y;
     int numbombs;
     boolean bomb, blank;
+    //creates the variables for the Locations class
 
-    public Locations(int locx, int locy)
+    public Locations(int locx, int locy) //initializes the variables
     {
         x = locx;
         y = locy;
@@ -15,6 +16,7 @@ public class Locations
         numbombs = 0;
     }
 
+    //all methods below are basic get methods
     public int getLocX()
     {
         return x;
