@@ -83,7 +83,7 @@ public class Main implements MouseListener, ActionListener, KeyListener
 
             c.add(main);
             f.show();
-            rungame();
+            runGame();
     }
 
     //slows down the game in order to play + timer
