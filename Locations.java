@@ -7,13 +7,21 @@ public class Locations
     boolean bomb, blank;
     //creates the variables for the Locations class
 
-    public Locations(int locx, int locy) //initializes the variables
+    public Locations(int locx, int locy, boolean isbomb) //initializes the variables
     {
         x = locx;
         y = locy;
         blank = true;
-        bomb = false;
         numbombs = 0;
+        //9x9 grid with 10 mines
+        if(isbomb == true)
+        {
+            makeBomb();
+        }
+        else
+        {
+            bomb = isbomb;
+        }
     }
 
     //all methods below are basic get methods
@@ -37,4 +45,24 @@ public class Locations
         return blank;
     }
 
+    //below methods deal with making a space a bomb
+    public void makeBomb()
+    {
+        bomb = true;
+        blank = false;
+    }
+
+    public void setBombs(int nb)
+    {
+        numbombs = nb;
+        if(numbombs != 0)
+        {
+            blank = false;
+        }
+    }
+
+    public int drawBombs()
+    {
+        return numbombs;
+    }
 }
