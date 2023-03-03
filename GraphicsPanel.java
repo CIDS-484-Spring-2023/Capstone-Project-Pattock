@@ -25,13 +25,13 @@ public class GraphicsPanel extends JPanel
         flagimage = Toolkit.getDefaultToolkit().getImage("Flag.png");
     }
 
-    public void updateTime(int time2, boolean startgame2)
+    public void updateStart(int time2, boolean startgame2)
     {
         time = time2;
         startgame = startgame2;
     }
 
-    public void updateGame(int time2)
+    public void updateTime(int time2)
     {
         time = time2;
     }
@@ -39,5 +39,7 @@ public class GraphicsPanel extends JPanel
     public void paint (Graphics g)
     {
         super.paint(g);
+
+
     }
 }

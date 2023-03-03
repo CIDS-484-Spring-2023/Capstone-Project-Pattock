@@ -12,7 +12,6 @@ public class Main implements MouseListener, ActionListener, KeyListener
     GraphicsPanel g;
     JButton startbutton, quitbutton, ngbutton;
 
-
     int[] bombx, bomby;
     int[] flagx, flagy;
 
@@ -107,19 +106,19 @@ public class Main implements MouseListener, ActionListener, KeyListener
                     time = time + 1;
                 }
 
-                g.updateTime(time, startgame);
+                g.updateStart(time, startgame);
                 g.repaint();
             }
         }
     }
 
-    //the main Event listeners I plan to use are MouseClicked and ActionPerformed. If I have the time I would also like to add some keylistener functions, like p to pause
+    //event listeners, will mainly use mouseClicked and actionPerformed
     public void mousePressed(MouseEvent evt)
     {}
 
     public void mouseClicked(MouseEvent evt)
     {
-
+        //will add stuff
     }
 
     public void mouseReleased(MouseEvent evt)
@@ -155,7 +154,7 @@ public class Main implements MouseListener, ActionListener, KeyListener
             time = 0;
             clicklocations.clear();
             flagarray.clear();
-            g.updateGame(time);
+            g.updateTime(time);
             g.repaint();
         }
     }

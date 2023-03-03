@@ -45,7 +45,12 @@ public class Locations
         return blank;
     }
 
-    //below methods deal with making a space a bomb
+    public int getNumBombs()
+    {
+        return numbombs;
+    }
+
+    //methods below deal with making a space a bomb
     public void makeBomb()
     {
         bomb = true;
@@ -61,8 +66,4 @@ public class Locations
         }
     }
 
-    public int drawBombs()
-    {
-        return numbombs;
-    }
 }
