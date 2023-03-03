@@ -3,3 +3,6 @@ In this project I will attempt to create minesweeper using Java Swing and use a 
 
 Milestone 1:
 https://youtu.be/ZeRqH5KuFk4
+
+Milestone 2:
+https://youtu.be/UqtN_pNvifc
