@@ -8,3 +8,7 @@ Added Basic structures into the classes
 Milestone 2:
 https://youtu.be/UqtN_pNvifc
 Added JFrame and Buttons, created X & Y arrays for Bombs and Flags, added Arraylists for Blanks, Flags, and ClickLocations
+
+Milestone 3:
+https://youtu.be/X_l_k-c1u-I
+Added bomb randomization and placement, number placement, painting of bombs, nunmbers, and flags, and ability to add flags
