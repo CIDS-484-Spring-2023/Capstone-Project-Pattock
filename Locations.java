@@ -66,4 +66,9 @@ public class Locations
         }
     }
 
+    public int drawBombs()
+    {
+        return numbombs;
+    }
+
 }

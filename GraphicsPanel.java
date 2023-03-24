@@ -9,9 +9,13 @@ public class GraphicsPanel extends JPanel
     
     Image one, two, three, four, five, six, seven, eight, mineimage, flagimage;
     int time;
-    boolean startgame;
+    boolean startgame,endgame,isflag;
+    ArrayList<Flag> flag;
+    ArrayList<ClickLocation> clicklocations;
+    ArrayList<Locations> blanks;
+    Locations[][] grid;
 
-    public GraphicsPanel()
+    public GraphicsPanel(boolean endgame1, int time1, Locations[][] grid1, ArrayList<Flag> flag1, ArrayList<ClickLocation> clicklocations1, boolean startgame1, ArrayList<Locations> blanks1)
     {
         one = Toolkit.getDefaultToolkit().getImage("Number 1.png");
         two = Toolkit.getDefaultToolkit().getImage("Number 2.png");
@@ -23,23 +27,185 @@ public class GraphicsPanel extends JPanel
         eight = Toolkit.getDefaultToolkit().getImage("Number 8.png");
         mineimage = Toolkit.getDefaultToolkit().getImage("Mine.png");
         flagimage = Toolkit.getDefaultToolkit().getImage("Flag.png");
+        
+        endgame = endgame1;
+        time = time1;
+        grid = grid1;
+        flag = flag1;
+        clicklocations = clicklocations1;
+        startgame = startgame1;
+        blanks = blanks1;
     }
 
-    public void updateStart(int time2, boolean startgame2)
+    public void updateTime(int time2, boolean startgame2)
     {
         time = time2;
         startgame = startgame2;
     }
 
-    public void updateTime(int time2)
+    public void updateGame(int time2)
     {
         time = time2;
     }
-
+    
+    public void updateFlag(ArrayList<Flag> flaga)
+    {
+        flag = flaga;
+    }
+    
+    public void updateEnd(boolean endgame1)
+    {
+        endgame = endgame1;
+    }
+    
+    public void updateClickLocations(ArrayList<ClickLocation> clicklocations1)
+    {
+        clicklocations = clicklocations1;
+    }
+    
     public void paint (Graphics g)
     {
         super.paint(g);
-
-
+        
+        g.drawString("Time: " + time,200,20);
+        
+        g.setColor(new Color(185,185,185));
+        g.fillRect(40,40,360,360);
+        
+        g.setColor(Color.black);
+        
+        //Rectangles for the grid
+        for(int index = 0; index < 9 ; index++)
+        {
+            g.drawRect(40 + index * 40,40,40,40);
+        }
+        for(int index = 10; index < 19; index++)
+        {
+            g.drawRect(index * 40 - 360,80,40,40);
+        }
+        for(int index = 20; index < 29; index++)
+        {
+            g.drawRect(index * 40 - 760,120,40,40);
+        }
+        for(int index = 30; index < 39; index++)
+        {
+            g.drawRect(index * 40 - 1160,160,40,40);
+        }
+        for(int index = 40; index < 49; index++)
+        {
+            g.drawRect(index * 40 - 1560,200,40,40);
+        }
+        for(int index = 50; index < 59; index++)
+        {
+            g.drawRect(index * 40 - 1960,240,40,40);
+        }
+        for(int index = 60; index < 69; index++)
+        {
+            g.drawRect(index * 40 - 2360,280,40,40);
+        }
+        for(int index = 70; index < 79; index++)
+        {
+            g.drawRect(index * 40 - 2760,320,40,40);
+        }
+        for(int index = 80; index < 89; index++)
+        {
+            g.drawRect(index * 40 - 3160,360,40,40);
+        }
+        
+        //draws the bombs and images as they are clicked
+        for(int index = 0; index < clicklocations.size(); index++)
+        {
+            if(grid[clicklocations.get(index).getX()][clicklocations.get(index).getY()].drawBombs() == 1)
+                    {
+                        g.drawImage(one,clicklocations.get(index).getX() * 40 + 40, clicklocations.get(index).getY() * 40 +40,40,40,null);
+                    }
+            if(grid[clicklocations.get(index).getX()][clicklocations.get(index).getY()].drawBombs() == 2)
+                    {
+                        g.drawImage(two,clicklocations.get(index).getX() * 40 + 40, clicklocations.get(index).getY() * 40 +40,40,40,null);
+                    }
+            if(grid[clicklocations.get(index).getX()][clicklocations.get(index).getY()].drawBombs() == 3)
+                    {
+                        g.drawImage(three,clicklocations.get(index).getX() * 40 + 40, clicklocations.get(index).getY() * 40 +40,40,40,null);
+                    }
+            if(grid[clicklocations.get(index).getX()][clicklocations.get(index).getY()].drawBombs() == 4)
+                    {
+                        g.drawImage(four,clicklocations.get(index).getX() * 40 + 40, clicklocations.get(index).getY() * 40 +40,40,40,null);
+                    }
+            if(grid[clicklocations.get(index).getX()][clicklocations.get(index).getY()].drawBombs() == 5)
+                    {
+                        g.drawImage(five,clicklocations.get(index).getX() * 40 + 40, clicklocations.get(index).getY() * 40 +40,40,40,null);
+                    }
+            if(grid[clicklocations.get(index).getX()][clicklocations.get(index).getY()].drawBombs() == 6)
+                    {
+                        g.drawImage(six,clicklocations.get(index).getX() * 40 + 40, clicklocations.get(index).getY() * 40 +40,40,40,null);
+                    }
+            if(grid[clicklocations.get(index).getX()][clicklocations.get(index).getY()].drawBombs() == 7)
+                    {
+                        g.drawImage(seven,clicklocations.get(index).getX() * 40 + 40, clicklocations.get(index).getY() * 40 +40,40,40,null);
+                    }
+            if(grid[clicklocations.get(index).getX()][clicklocations.get(index).getY()].drawBombs() == 8)
+                    {
+                        g.drawImage(eight,clicklocations.get(index).getX() * 40 + 40, clicklocations.get(index).getY() * 40 +40,40,40,null);
+                }
+            if(grid[clicklocations.get(index).getX()][clicklocations.get(index).getY()].getBomb() == true)
+                {
+                   g.drawImage(mineimage,clicklocations.get(index).getX() * 40 + 40,clicklocations.get(index).getY() * 40 + 40,40,40,null);
+                }
+        }
+        
+        //makes bombs and numbers visable before hitting startgame
+        if(startgame == false)
+        {
+          for(int index = 0; index < grid.length; index++)
+          {
+            for(int i = 0; i < grid[0].length; i++)
+            {
+                if(grid[index][i].drawBombs() == 1)
+                    {
+                        g.drawImage(one,grid[index][i].getLocX() * 40 + 40, grid[index][i].getLocY() * 40 +40,40,40,null);
+                    }
+                if(grid[index][i].drawBombs() == 2)
+                    {
+                        g.drawImage(two,grid[index][i].getLocX() * 40 + 40, grid[index][i].getLocY() * 40 +40,40,40,null);
+                    }
+                if(grid[index][i].drawBombs() == 3)
+                    {
+                        g.drawImage(three,grid[index][i].getLocX() * 40 + 40, grid[index][i].getLocY() * 40 +40,40,40,null);
+                    }
+                if(grid[index][i].drawBombs() == 4)
+                    {
+                        g.drawImage(four,grid[index][i].getLocX() * 40 + 40, grid[index][i].getLocY() * 40 +40,40,40,null);
+                    }
+                if(grid[index][i].drawBombs() == 5)
+                    {
+                        g.drawImage(five,grid[index][i].getLocX() * 40 + 40, grid[index][i].getLocY() * 40 +40,40,40,null);
+                    }
+                if(grid[index][i].drawBombs() == 6)
+                    {
+                        g.drawImage(six,grid[index][i].getLocX() * 40 + 40, grid[index][i].getLocY() * 40 +40,40,40,null);
+                    }
+                if(grid[index][i].drawBombs() == 7)
+                    {
+                        g.drawImage(seven,grid[index][i].getLocX() * 40 + 40, grid[index][i].getLocY() * 40 +40,40,40,null);
+                    }
+                if(grid[index][i].drawBombs() == 8)
+                    {
+                        g.drawImage(eight,grid[index][i].getLocX() * 40 + 40, grid[index][i].getLocY() * 40 +40,40,40,null);
+                }
+                if(grid[index][i].getBomb() == true)
+                {
+                   g.drawImage(mineimage,grid[index][i].getLocX() * 40 + 40,grid[index][i].getLocY() * 40 + 40,40,40,null);
+                }
+            }
+          }
+        }
+        
+        //draws the flags
+        for(int index = 0; index < flag.size(); index++)
+        {
+            g.drawImage(flagimage,(flag.get(index).getFlagX() * 40 + 40), (flag.get(index).getFlagY() * 40 + 40),40,40,null);
+        }
+        
+        
     }
 }

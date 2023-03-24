@@ -12,22 +12,26 @@ public class Main implements MouseListener, ActionListener, KeyListener
     GraphicsPanel g;
     JButton startbutton, quitbutton, ngbutton;
 
+
     int[] bombx, bomby;
     int[] flagx, flagy;
 
     boolean startgame, endgame;
 
-    int time, timecounter;
-
+    int time, timecounter,bombcounter;
+    int mousexleft, mouseyleft, mousexright, mouseyright;
+    
     ArrayList<Locations> blanks;
     ArrayList<Flag> flagarray;
     ArrayList<ClickLocation> clicklocations;
+    
+    Locations[][] grid;
 
     public Main()
     {
         //sets up the game window, creates and adds all frames and interactables
         f = new JFrame("Minesweeper");
-            f.setSize(500,500);
+            f.setSize(455,500);
             f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             f.setResizable(false);
 
@@ -48,11 +52,16 @@ public class Main implements MouseListener, ActionListener, KeyListener
             //array for storing which grid squares have been clicked/cleared
             clicklocations = new ArrayList<ClickLocation>();
 
+            randomizeBombs();
+            
             //acts as a screen for the JFrame
             Container c = f.getContentPane();
 
+            startgame = false;
+            endgame = false;
+            
             //adds event listeners to the GraphicsPanel, allows changes to occur
-            g = new GraphicsPanel(); //main method where items will be passed to GraphicsPanel class
+            g = new GraphicsPanel(endgame,time,grid,flagarray,clicklocations,startgame,blanks); //main method where items will be passed to GraphicsPanel class
                 g.addKeyListener(this);
                 g.addMouseListener(this);
             
@@ -64,8 +73,7 @@ public class Main implements MouseListener, ActionListener, KeyListener
             ngbutton = new JButton("New Game");
                 ngbutton.addActionListener(this);
 
-                startgame = false;
-                endgame = false;
+                
 
             //adds a section on the button of the window for the buttons
             south = new JPanel();
@@ -94,7 +102,7 @@ public class Main implements MouseListener, ActionListener, KeyListener
             g.repaint();
             try
             {
-                runner.sleep(10);
+                runner.sleep(19/2); //can't do decimals
             }
             catch(InterruptedException e) {}
             if(startgame == true)
@@ -106,19 +114,153 @@ public class Main implements MouseListener, ActionListener, KeyListener
                     time = time + 1;
                 }
 
-                g.updateStart(time, startgame);
+                g.updateTime(time, startgame);
                 g.repaint();
             }
         }
     }
 
-    //event listeners, will mainly use mouseClicked and actionPerformed
+    //randomizes location of all bombs and places them at those locations
+    public void randomizeBombs()
+    {
+        //determines the random locations of the bombs
+        for(int index = 0; index < bombx.length; index++)
+        {
+            int possx = (int)((Math.random() * 9));
+            int possy = (int)((Math.random() * 9));
+            boolean ok = true;
+            
+            //checks if 2 bombs are on the same space
+            for(int i = 0; i < bombx.length; i++)
+            {
+                if(possx == bombx[i] && possy == bomby[i])
+                {
+                    ok = false;
+                }
+            }
+            //if 2 bombs are on the same space, rerandomize the most recent bomb
+            if(ok == true)
+            {
+                bombx[index] = possx;
+                bomby[index] = possy;
+            }
+            else
+            {
+                index--;
+            }
+        }
+        
+        //places bombs in their locations
+        grid = new Locations[9][9];
+        for(int index = 0; index < grid.length; index++)
+        {
+            for(int i = 0; i < grid[0].length; i++)
+            {
+                grid[index][i] = new Locations(index,i,false);
+            }
+        }
+        
+        //marks locations as a bomb tile
+        for(int index = 0; index < bombx.length; index++)
+        {
+            grid[bomby[index]][bombx[index]].makeBomb();
+        }
+        
+        //counts how many bombs are next to location and places a number value on the tile
+            for(int index = 0; index < grid.length; index++)
+        {
+            for(int i = 0; i < grid[0].length; i++)
+            {
+                bombcounter = 0;
+                if(index > 0 && i > 0)
+                if(grid[index-1][i-1].getBomb() == true){bombcounter++;}
+                if(i > 0)
+                if(grid[index][i-1].getBomb() == true){bombcounter++;}                
+                if(index < grid.length - 1 && i > 0)
+                if(grid[index+1][i-1].getBomb() == true){bombcounter++;}                 
+                if(index > 0)
+                if(grid[index-1][i].getBomb() == true){bombcounter++;}
+                
+                if(index < grid.length - 1)
+                if(grid[index+1][i].getBomb() == true){bombcounter++;}
+                if(index > 0 && i < grid[0].length - 1)
+                if(grid[index-1][i+1].getBomb() == true){bombcounter++;}                
+                if(i < grid[0].length - 1)
+                if(grid[index][i+1].getBomb() == true){bombcounter++;}
+                if(index < grid.length - 1 && i < grid[0].length - 1)
+                if(grid[index+1][i+1].getBomb() == true){bombcounter++;}     
+                grid[index][i].setBombs(bombcounter);
+            }
+            
+        }
+        
+
+    }
+    
+    //the main Event listeners I plan to use are MouseClicked and ActionPerformed. If I have the time I would also like to add some keylistener functions, like p to pause
     public void mousePressed(MouseEvent evt)
     {}
 
     public void mouseClicked(MouseEvent evt)
     {
-        //will add stuff
+       //checks if a space is left clicked
+       if(evt.getButton() == MouseEvent.BUTTON1)
+       {
+        //System.out.println("left"  );
+        int mousex = evt.getX();
+        int mousey = evt.getY();
+        int xgrid = mousey/40 - 1;
+        int ygrid = mousex/40 - 1;
+        
+        //checks if a bomb is clicked/ends game
+        if(grid[ygrid][xgrid].getBomb() == true)
+        {
+         endgame = true;  
+        }
+        else
+        {
+            clicklocations.add(new ClickLocation(ygrid,xgrid));
+        }
+        // System.out.println(""+ grid[ygrid][xgrid].drawBombs());
+        
+        //checks if a blank is clicked
+        if(grid[ygrid][xgrid].getBlank() == true)
+        {
+            //still need to add
+        }
+        
+        
+        
+       }
+       //checks if a space is right clicked/adds a flag
+         if(evt.getButton() == MouseEvent.BUTTON3)
+       {
+        //System.out.println("right"  );
+        
+        int mousex2 = evt.getX();
+        int mousey2 = evt.getY();
+        
+        
+        /**
+        for(int index = 0; index < flagx.length; index++)
+        {
+            if(mousex2 < (flagx[index]+1) * 40 + 40 && mousex2 > (flagx[index]+1) * 40 && mousey2 < (flagy[index]+1) * 40 + 40 && mousey2 > (flagy[index]+1) * 40)
+            {
+                flag = true;
+            }
+        }
+        */
+        int xgrid = mousey2/40 - 1;
+        int ygrid = mousex2/40 - 1;
+        flagarray.add(new Flag(ygrid,xgrid));
+        
+        g.updateFlag(flagarray);
+       }
+        
+       
+        
+        g.updateEnd(endgame);
+        g.repaint();
     }
 
     public void mouseReleased(MouseEvent evt)
@@ -151,10 +293,13 @@ public class Main implements MouseListener, ActionListener, KeyListener
         if(event.getSource() == ngbutton)
         {
             startgame = false;
+            endgame = false;
             time = 0;
             clicklocations.clear();
             flagarray.clear();
-            g.updateTime(time);
+            randomizeBombs();
+            g.updateClickLocations(clicklocations);
+            g.updateGame(time);
             g.repaint();
         }
     }
