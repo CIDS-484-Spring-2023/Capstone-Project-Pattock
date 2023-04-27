@@ -12,10 +12,11 @@ public class GraphicsPanel extends JPanel
     boolean startgame,endgame,isflag;
     ArrayList<Flag> flag;
     ArrayList<ClickLocation> clicklocations;
+    ArrayList<Locations> clicked;
     ArrayList<Locations> blanks;
     Locations[][] grid;
 
-    public GraphicsPanel(boolean endgame1, int time1, Locations[][] grid1, ArrayList<Flag> flag1, ArrayList<ClickLocation> clicklocations1, boolean startgame1, ArrayList<Locations> blanks1)
+    public GraphicsPanel(boolean endgame1, int time1, Locations[][] grid1, ArrayList<Flag> flag1, ArrayList<Locations> clicked1, boolean startgame1, ArrayList<Locations> blanks1)
     {
         one = Toolkit.getDefaultToolkit().getImage("Number 1.png");
         two = Toolkit.getDefaultToolkit().getImage("Number 2.png");
@@ -32,7 +33,8 @@ public class GraphicsPanel extends JPanel
         time = time1;
         grid = grid1;
         flag = flag1;
-        clicklocations = clicklocations1;
+        clicked = clicked1;
+        //clicklocations = clicklocations1;
         startgame = startgame1;
         blanks = blanks1;
     }
@@ -113,92 +115,93 @@ public class GraphicsPanel extends JPanel
         }
         
         //draws the bombs and images as they are clicked
-        for(int index = 0; index < clicklocations.size(); index++)
+        for(int index = 0; index < clicked.size(); index++)
         {
-            if(grid[clicklocations.get(index).getX()][clicklocations.get(index).getY()].drawBombs() == 1)
+            if(grid[clicked.get(index).getLocX()][clicked.get(index).getLocY()].drawBombs() == 1)
                     {
-                        g.drawImage(one,clicklocations.get(index).getX() * 40 + 40, clicklocations.get(index).getY() * 40 +40,40,40,null);
+                        g.drawImage(one,clicked.get(index).getLocX() * 40 + 40, clicked.get(index).getLocY() * 40 +40,40,40,null);
                     }
-            if(grid[clicklocations.get(index).getX()][clicklocations.get(index).getY()].drawBombs() == 2)
+            if(grid[clicked.get(index).getLocX()][clicked.get(index).getLocY()].drawBombs() == 2)
                     {
-                        g.drawImage(two,clicklocations.get(index).getX() * 40 + 40, clicklocations.get(index).getY() * 40 +40,40,40,null);
+                        g.drawImage(one,clicked.get(index).getLocX() * 40 + 40, clicked.get(index).getLocY() * 40 +40,40,40,null);
                     }
-            if(grid[clicklocations.get(index).getX()][clicklocations.get(index).getY()].drawBombs() == 3)
+            if(grid[clicked.get(index).getLocX()][clicked.get(index).getLocY()].drawBombs() == 3)
                     {
-                        g.drawImage(three,clicklocations.get(index).getX() * 40 + 40, clicklocations.get(index).getY() * 40 +40,40,40,null);
+                        g.drawImage(one,clicked.get(index).getLocX() * 40 + 40, clicked.get(index).getLocY() * 40 +40,40,40,null);
                     }
-            if(grid[clicklocations.get(index).getX()][clicklocations.get(index).getY()].drawBombs() == 4)
+            if(grid[clicked.get(index).getLocX()][clicked.get(index).getLocY()].drawBombs() == 4)
                     {
-                        g.drawImage(four,clicklocations.get(index).getX() * 40 + 40, clicklocations.get(index).getY() * 40 +40,40,40,null);
+                        g.drawImage(one,clicked.get(index).getLocX() * 40 + 40, clicked.get(index).getLocY() * 40 +40,40,40,null);
                     }
-            if(grid[clicklocations.get(index).getX()][clicklocations.get(index).getY()].drawBombs() == 5)
+            if(grid[clicked.get(index).getLocX()][clicked.get(index).getLocY()].drawBombs() == 5)
                     {
-                        g.drawImage(five,clicklocations.get(index).getX() * 40 + 40, clicklocations.get(index).getY() * 40 +40,40,40,null);
+                        g.drawImage(one,clicked.get(index).getLocX() * 40 + 40, clicked.get(index).getLocY() * 40 +40,40,40,null);
                     }
-            if(grid[clicklocations.get(index).getX()][clicklocations.get(index).getY()].drawBombs() == 6)
+            if(grid[clicked.get(index).getLocX()][clicked.get(index).getLocY()].drawBombs() == 6)
                     {
-                        g.drawImage(six,clicklocations.get(index).getX() * 40 + 40, clicklocations.get(index).getY() * 40 +40,40,40,null);
+                        g.drawImage(one,clicked.get(index).getLocX() * 40 + 40, clicked.get(index).getLocY() * 40 +40,40,40,null);
                     }
-            if(grid[clicklocations.get(index).getX()][clicklocations.get(index).getY()].drawBombs() == 7)
+            if(grid[clicked.get(index).getLocX()][clicked.get(index).getLocY()].drawBombs() == 7)
                     {
-                        g.drawImage(seven,clicklocations.get(index).getX() * 40 + 40, clicklocations.get(index).getY() * 40 +40,40,40,null);
+                        g.drawImage(one,clicked.get(index).getLocX() * 40 + 40, clicked.get(index).getLocY() * 40 +40,40,40,null);
                     }
-            if(grid[clicklocations.get(index).getX()][clicklocations.get(index).getY()].drawBombs() == 8)
+            if(grid[clicked.get(index).getLocX()][clicked.get(index).getLocY()].drawBombs() == 8)
                     {
-                        g.drawImage(eight,clicklocations.get(index).getX() * 40 + 40, clicklocations.get(index).getY() * 40 +40,40,40,null);
-                }
-            if(grid[clicklocations.get(index).getX()][clicklocations.get(index).getY()].getBomb() == true)
-                {
-                   g.drawImage(mineimage,clicklocations.get(index).getX() * 40 + 40,clicklocations.get(index).getY() * 40 + 40,40,40,null);
-                }
+                        g.drawImage(one,clicked.get(index).getLocX() * 40 + 40, clicked.get(index).getLocY() * 40 +40,40,40,null);
+                    }
+            if(grid[clicked.get(index).getLocX()][clicked.get(index).getLocY()].getBomb() == true)
+                    {
+                        g.drawImage(one,clicked.get(index).getLocX() * 40 + 40, clicked.get(index).getLocY() * 40 +40,40,40,null);
+                    }
         }
         
         //makes bombs and numbers visable before hitting startgame
+        /*
         if(startgame == false)
         {
           for(int index = 0; index < grid.length; index++)
           {
-            for(int i = 0; i < grid[0].length; i++)
-            {
-                if(grid[index][i].drawBombs() == 1)
+            
+                if(grid[clicked.get(index).getLocX()][clicked.get(index).getLocY()].drawBombs() == 1)
                     {
-                        g.drawImage(one,grid[index][i].getLocX() * 40 + 40, grid[index][i].getLocY() * 40 +40,40,40,null);
+                        g.drawImage(one,clicked.get(index).getLocX() * 40 + 40, clicked.get(index).getLocY() * 40 +40,40,40,null);
                     }
-                if(grid[index][i].drawBombs() == 2)
+                if(grid[clicked.get(index).getLocX()][clicked.get(index).getLocY()].drawBombs() == 2)
                     {
-                        g.drawImage(two,grid[index][i].getLocX() * 40 + 40, grid[index][i].getLocY() * 40 +40,40,40,null);
+                        g.drawImage(one,clicked.get(index).getLocX() * 40 + 40, clicked.get(index).getLocY() * 40 +40,40,40,null);
                     }
-                if(grid[index][i].drawBombs() == 3)
+                if(grid[clicked.get(index).getLocX()][clicked.get(index).getLocY()].drawBombs() == 3)
                     {
-                        g.drawImage(three,grid[index][i].getLocX() * 40 + 40, grid[index][i].getLocY() * 40 +40,40,40,null);
+                        g.drawImage(one,clicked.get(index).getLocX() * 40 + 40, clicked.get(index).getLocY() * 40 +40,40,40,null);
                     }
-                if(grid[index][i].drawBombs() == 4)
+                if(grid[clicked.get(index).getLocX()][clicked.get(index).getLocY()].drawBombs() == 4)
                     {
-                        g.drawImage(four,grid[index][i].getLocX() * 40 + 40, grid[index][i].getLocY() * 40 +40,40,40,null);
+                        g.drawImage(one,clicked.get(index).getLocX() * 40 + 40, clicked.get(index).getLocY() * 40 +40,40,40,null);
                     }
-                if(grid[index][i].drawBombs() == 5)
+                if(grid[clicked.get(index).getLocX()][clicked.get(index).getLocY()].drawBombs() == 5)
                     {
-                        g.drawImage(five,grid[index][i].getLocX() * 40 + 40, grid[index][i].getLocY() * 40 +40,40,40,null);
+                        g.drawImage(one,clicked.get(index).getLocX() * 40 + 40, clicked.get(index).getLocY() * 40 +40,40,40,null);
                     }
-                if(grid[index][i].drawBombs() == 6)
+                if(grid[clicked.get(index).getLocX()][clicked.get(index).getLocY()].drawBombs() == 6)
                     {
-                        g.drawImage(six,grid[index][i].getLocX() * 40 + 40, grid[index][i].getLocY() * 40 +40,40,40,null);
+                        g.drawImage(one,clicked.get(index).getLocX() * 40 + 40, clicked.get(index).getLocY() * 40 +40,40,40,null);
                     }
-                if(grid[index][i].drawBombs() == 7)
+                if(grid[clicked.get(index).getLocX()][clicked.get(index).getLocY()].drawBombs() == 7)
                     {
-                        g.drawImage(seven,grid[index][i].getLocX() * 40 + 40, grid[index][i].getLocY() * 40 +40,40,40,null);
+                        g.drawImage(one,clicked.get(index).getLocX() * 40 + 40, clicked.get(index).getLocY() * 40 +40,40,40,null);
                     }
-                if(grid[index][i].drawBombs() == 8)
+                if(grid[clicked.get(index).getLocX()][clicked.get(index).getLocY()].drawBombs() == 8)
                     {
-                        g.drawImage(eight,grid[index][i].getLocX() * 40 + 40, grid[index][i].getLocY() * 40 +40,40,40,null);
-                }
-                if(grid[index][i].getBomb() == true)
-                {
-                   g.drawImage(mineimage,grid[index][i].getLocX() * 40 + 40,grid[index][i].getLocY() * 40 + 40,40,40,null);
-                }
-            }
+                        g.drawImage(one,clicked.get(index).getLocX() * 40 + 40, clicked.get(index).getLocY() * 40 +40,40,40,null);
+                    }
+                if(grid[clicked.get(index).getLocX()][clicked.get(index).getLocY()].getBomb() == true)
+                    {
+                        g.drawImage(one,clicked.get(index).getLocX() * 40 + 40, clicked.get(index).getLocY() * 40 +40,40,40,null);
+                    }
+            
           }
         }
+        */
         
         //draws the flags
         for(int index = 0; index < flag.size(); index++)
