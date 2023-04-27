@@ -26,6 +26,7 @@ public class Main implements MouseListener, ActionListener, KeyListener
     ArrayList<Locations> blanks;
     ArrayList<Locations> needscheck;
     ArrayList<Locations> beenchecked;
+    ArrayList<Locations> clicked;
     
     Locations[][] grid;
 
@@ -49,6 +50,7 @@ public class Main implements MouseListener, ActionListener, KeyListener
             blanks = new ArrayList<Locations>();
             needscheck = new ArrayList<Locations>();
             beenchecked = new ArrayList<Locations>();
+            clicked = new ArrayList<Locations>();
 
             //array for storing the list of flags
             flagarray = new ArrayList<Flag>();
@@ -65,7 +67,7 @@ public class Main implements MouseListener, ActionListener, KeyListener
             endgame = false;
             
             //adds event listeners to the GraphicsPanel, allows changes to occur
-            g = new GraphicsPanel(endgame,time,grid,flagarray,clicklocations,startgame,blanks); //main method where items will be passed to GraphicsPanel class
+            g = new GraphicsPanel(endgame,time,grid,flagarray,clicked,startgame,blanks); //main method where items will be passed to GraphicsPanel class
                 g.addKeyListener(this);
                 g.addMouseListener(this);
             
@@ -201,13 +203,22 @@ public class Main implements MouseListener, ActionListener, KeyListener
 
     }
     
+    //adds beenchecked locations to clicked arraylist
+    public void clicked()
+    {
+        for(int index = 0; index < beenchecked.size(); index++)
+        {
+            clicked.add(new Locations(beenchecked.get(index).getLocX(), beenchecked.get(index).getLocY()));
+        }
+    }
+    
     //checks if a space has been checked as a blank or not
     public boolean hasbeenchecked(Locations loc)
     {
         boolean found = false;
-        for(int index = 0; index < beenchecked.size();)
+        for(int index = 0; index < clicked.size();)
         {
-            if(loc.getLocX() == beenchecked.get(index).getLocX() && loc.getLocY() == beenchecked.get(index).getLocY())
+            if(loc.getLocX() == clicked.get(index).getLocX() && loc.getLocY() == clicked.get(index).getLocY())
             {
                 found = true;
             }
@@ -221,8 +232,9 @@ public class Main implements MouseListener, ActionListener, KeyListener
     //checks if spaces around clicked blank space -- is the clear blanks logic
     public void Blanks()
     {
-        while(needscheck.size() > 0)
+           while(needscheck.size() > 0)
         {
+            
             Locations loc = needscheck.get(0);
             
             for(int index = 0; index < grid.length; index++)
@@ -234,6 +246,7 @@ public class Main implements MouseListener, ActionListener, KeyListener
                         if(index > 0 && i > 0 && hasbeenchecked(grid[index-1][i-1]) == false)
                         if(grid[index-1][i-1].drawBombs() == 0)
                         {
+                            System.out.println("test");
                             needscheck.add(grid[index-1][i-1]);
                         }
                         else if(grid[index-1][i-1].getBomb() == false && grid[index-1][i-1].drawBombs() > 0)
@@ -317,7 +330,6 @@ public class Main implements MouseListener, ActionListener, KeyListener
                         {
                             beenchecked.add(grid[index+1][i+1]);
                         }
-                        
                 }
             }
             
@@ -326,6 +338,13 @@ public class Main implements MouseListener, ActionListener, KeyListener
             needscheck.remove(0);
             
         }
+        
+        /*
+        for(int index = 0; index < beenchecked.size(); index++)
+            {
+                clicklocations.add(new ClickLocation(beenchecked.get(index).getLocX(),beenchecked.get(index).getLocY()));   
+            }
+        */
     }
     
     //the main Event listeners I plan to use are MouseClicked and ActionPerformed. If I have the time I would also like to add some keylistener functions, like p to pause
@@ -350,7 +369,7 @@ public class Main implements MouseListener, ActionListener, KeyListener
         }
         else
         {
-            clicklocations.add(new ClickLocation(ygrid,xgrid));
+            clicked.add(new Locations(ygrid,xgrid,false));
         }
         // System.out.println(""+ grid[ygrid][xgrid].drawBombs());
         
@@ -360,6 +379,8 @@ public class Main implements MouseListener, ActionListener, KeyListener
             needscheck.clear();
             needscheck.add(grid[ygrid][xgrid]);
             Blanks();
+            clicked();
+            beenchecked.clear();
         }
         
         
@@ -418,7 +439,7 @@ public class Main implements MouseListener, ActionListener, KeyListener
             startgame = false;
             endgame = false;
             time = 0;
-            clicklocations.clear();
+            beenchecked.clear();
             flagarray.clear();
             randomizeBombs();
             g.updateClickLocations(clicklocations);
