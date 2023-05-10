@@ -27,3 +27,9 @@ Milestone 4:
 Added most of the logic for clearing blank spaces
 
 https://youtu.be/DzETrTA-txQ
+
+
+Capstone Final Video:
+Final overview of what was accomplished during the semester
+
+https://youtu.be/7GAX3x16Tb4
