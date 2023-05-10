@@ -26,6 +26,7 @@ public class Main implements MouseListener, ActionListener, KeyListener
     ArrayList<Locations> blanks;
     ArrayList<Locations> needscheck;
     ArrayList<Locations> beenchecked;
+    ArrayList<Locations> clicked;
     
     Locations[][] grid;
 
@@ -49,6 +50,7 @@ public class Main implements MouseListener, ActionListener, KeyListener
             blanks = new ArrayList<Locations>();
             needscheck = new ArrayList<Locations>();
             beenchecked = new ArrayList<Locations>();
+            clicked = new ArrayList<Locations>();
 
             //array for storing the list of flags
             flagarray = new ArrayList<Flag>();
@@ -65,7 +67,7 @@ public class Main implements MouseListener, ActionListener, KeyListener
             endgame = false;
             
             //adds event listeners to the GraphicsPanel, allows changes to occur
-            g = new GraphicsPanel(endgame,time,grid,flagarray,clicklocations,startgame,blanks); //main method where items will be passed to GraphicsPanel class
+            g = new GraphicsPanel(endgame,time,grid,flagarray,clicked,startgame,blanks); //main method where items will be passed to GraphicsPanel class
                 g.addKeyListener(this);
                 g.addMouseListener(this);
             
@@ -201,132 +203,128 @@ public class Main implements MouseListener, ActionListener, KeyListener
 
     }
     
+    //adds beenchecked locations to clicked arraylist
+    public void clicked()
+    {
+        for(int index = 0; index < beenchecked.size(); index++)
+        {
+            clicked.add(new Locations(beenchecked.get(index).getLocX(), beenchecked.get(index).getLocY()));
+        }
+    }
+    
     //checks if a space has been checked as a blank or not
     public boolean hasbeenchecked(Locations loc)
     {
         boolean found = false;
-        for(int index = 0; index < beenchecked.size();)
+        for(int index = 0; index < clicked.size(); index++)
         {
-            if(loc.getLocX() == beenchecked.get(index).getLocX() && loc.getLocY() == beenchecked.get(index).getLocY())
+            if(loc.getLocX() == clicked.get(index).getLocX() && loc.getLocY() == clicked.get(index).getLocY())
             {
                 found = true;
             }
         }
-        if(found == false)
-         {
-            return false;
-          } else {return true;}
+        
+        return found;
     }
     
-    //checks if spaces around clicked blank space -- is the clear blanks logic
-    public void Blanks()
-    {
-        while(needscheck.size() > 0)
-        {
-            Locations loc = needscheck.get(0);
-            
-            for(int index = 0; index < grid.length; index++)
+   //checks if spaces around clicked blank space -- is the clear blanks logic
+   public void Blanks(Locations loc)
+   {
+
+       if(loc.drawBombs() > 0)
+       {
+           return;
+       }
+
+           if(loc.getLocX() -1 > 0 && loc.getLocY() -1 > 0 && hasbeenchecked(grid[loc.getLocX()-1][loc.getLocY()-1]) == false)
+            if(grid[loc.getLocX()-1][loc.getLocY()-1].drawBombs() == 0)
             {
-                for(int i = 0; i < grid[0].length; i++)
-                {
-                    
-                        //top left
-                        if(index > 0 && i > 0 && hasbeenchecked(grid[index-1][i-1]) == false)
-                        if(grid[index-1][i-1].drawBombs() == 0)
-                        {
-                            needscheck.add(grid[index-1][i-1]);
-                        }
-                        else if(grid[index-1][i-1].getBomb() == false && grid[index-1][i-1].drawBombs() > 0)
-                        {
-                            beenchecked.add(grid[index-1][i-1]);
-                        }
-                    
-                        //directly above
-                        if(i > 0 && hasbeenchecked(grid[index][i-1]) == false)
-                        if(grid[index][i-1].drawBombs() == 0)
-                        {
-                             needscheck.add(grid[index][i-1]);
-                        }
-                        else if(grid[index][i-1].getBomb() == false && grid[index][i-1].drawBombs() > 0)
-                        {
-                            beenchecked.add(grid[index][i-1]);
-                        }
-                    
-                        //top right
-                        if(index < grid.length -1 && i > 0 && hasbeenchecked(grid[index+1][i-1]) == false)
-                        if(grid[index+1][i-1].drawBombs() == 0)
-                        {
-                             needscheck.add(grid[index+1][i-1]);
-                        }
-                        else if(grid[index+1][i-1].getBomb() == false && grid[index+1][i-1].drawBombs() > 0)
-                        {
-                            beenchecked.add(grid[index+1][i-1]);
-                        }
-                    
-                        //left
-                        if(index > 0 && hasbeenchecked(grid[index-1][i]) == false)
-                        if(grid[index-1][i].drawBombs() == 0)
-                        {
-                            needscheck.add(grid[index-1][i]);
-                        }
-                        else if(grid[index-1][i].getBomb() == false && grid[index-1][i].drawBombs() > 0)
-                        {
-                            beenchecked.add(grid[index-1][i]);
-                        }
-                    
-                        //right
-                        if(index < grid.length -1 && hasbeenchecked(grid[index+1][i]) == false)
-                        if(grid[index+1][i].drawBombs() == 0)
-                        {
-                            needscheck.add(grid[index+1][i]);
-                        }
-                        else if(grid[index+1][i].getBomb() == false && grid[index+1][i].drawBombs() > 0)
-                        {
-                            beenchecked.add(grid[index+1][i]);
-                        }
-                    
-                        //bottom left
-                        if(index > 0 && i < grid[0].length -1 && hasbeenchecked(grid[index-1][i+1]) == false)
-                        if(grid[index -1][i+1].drawBombs() == 0)
-                        {
-                            needscheck.add(grid[index-1][i+1]);
-                        }
-                        else if(grid[index-1][i+1].getBomb() == false && grid[index-1][i+1].drawBombs() > 0)
-                        {
-                            beenchecked.add(grid[index-1][i+1]);
-                        }
-                    
-                        //directly below
-                        if(i < grid[0].length -1 && hasbeenchecked(grid[index][i+1]) == false)
-                        if(grid[index][i+1].drawBombs() == 0)
-                        {
-                            needscheck.add(grid[index][i+1]);
-                        }
-                        else if(grid[index][i+1].getBomb() == false && grid[index][i+1].drawBombs() > 0)
-                        {
-                            beenchecked.add(grid[index][i+1]);
-                        }
-                    
-                        //bottom right
-                        if(index < grid.length -1 && i < grid[0].length -1 && hasbeenchecked(grid[index+1][i+1]) == false)
-                        if(grid[index+1][i+1].drawBombs() == 0)
-                        {
-                            needscheck.add(grid[index+1][i+1]);
-                        }
-                        else if(grid[index+1][i+1].getBomb() == false && grid[index+1][i+1].drawBombs() > 0)
-                        {
-                            beenchecked.add(grid[index+1][i+1]);
-                        }
-                        
-                }
+                //System.out.println(" " + needscheck.get(0).getLocX() + needscheck.get(0).getLocY());
+                Blanks(grid[loc.getLocX()-1][loc.getLocY()-1]);
+            } 
+            else if(grid[loc.getLocX()-1][loc.getLocY()-1].getBomb() == false && grid[loc.getLocX()-1][loc.getLocY()-1].drawBombs() > 0)
+            {
+                clicked.add(grid[loc.getLocX()-1][loc.getLocY()-1]);
             }
-            
-            beenchecked.add(loc);
-            
-            needscheck.remove(0);
-            
-        }
-    }
+                   
+           //directly above
+           if(loc.getLocY() -1 > 0 && hasbeenchecked(grid[loc.getLocX()][loc.getLocY()-1]) == false)
+            if(grid[loc.getLocX()][loc.getLocY()-1].drawBombs() == 0)
+            {
+                Blanks(grid[loc.getLocX()][loc.getLocY()-1]);
+            }
+            else if(grid[loc.getLocX()][loc.getLocY()-1].getBomb() == false && grid[loc.getLocX()][loc.getLocY()-1].drawBombs() > 0)
+            {
+                clicked.add(grid[loc.getLocX()][loc.getLocY()-1]);
+            }
+                   
+           //top right
+           if(loc.getLocX() +1 < grid.length -1 && loc.getLocY() -1 > 0 && hasbeenchecked(grid[loc.getLocX()+1][loc.getLocY()-1]) == false)
+            if(grid[loc.getLocX()+1][loc.getLocY()-1].drawBombs() == 0)
+            {
+                Blanks(grid[loc.getLocX()+1][loc.getLocY()-1]);
+            }
+            else if(grid[loc.getLocX()+1][loc.getLocY()-1].getBomb() == false && grid[loc.getLocX()+1][loc.getLocY()-1].drawBombs() > 0)
+            {
+                clicked.add(grid[loc.getLocX()+1][loc.getLocY()-1]);
+            }
+                   
+           //left
+           if(loc.getLocX() -1 > 0 && hasbeenchecked(grid[loc.getLocX()-1][loc.getLocY()]) == false)
+            if(grid[loc.getLocX()-1][loc.getLocY()].drawBombs() == 0)
+            {
+                Blanks(grid[loc.getLocX()-1][loc.getLocY()]);
+            }
+            else if(grid[loc.getLocX()-1][loc.getLocY()].getBomb() == false && grid[loc.getLocX()-1][loc.getLocY()].drawBombs() > 0)
+            {
+                clicked.add(grid[loc.getLocX()-1][loc.getLocY()]);
+            }
+                   
+           //right
+           if(loc.getLocX() +1 < grid.length -1 && hasbeenchecked(grid[loc.getLocX()+1][loc.getLocY()]) == false)
+            if(grid[loc.getLocX()+1][loc.getLocY()].drawBombs() == 0)
+            {
+                Blanks(grid[loc.getLocX()+1][loc.getLocY()]);
+            }
+            else if(grid[loc.getLocX()+1][loc.getLocY()].getBomb() == false && grid[loc.getLocX()+1][loc.getLocY()].drawBombs() > 0)
+            {
+                clicked.add(grid[loc.getLocX()+1][loc.getLocY()]);
+            }
+                   
+           //bottom left
+           if(loc.getLocX() -1 > 0 && loc.getLocY() +1 < grid[0].length -1 && hasbeenchecked(grid[loc.getLocX()-1][loc.getLocY()+1]) == false)
+            if(grid[loc.getLocX()-1][loc.getLocY()+1].drawBombs() == 0)
+            {
+                Blanks(grid[loc.getLocX()-1][loc.getLocY()+1]);
+            }
+            else if(grid[loc.getLocX()-1][loc.getLocY()+1].getBomb() == false && grid[loc.getLocX()-1][loc.getLocY()+1].drawBombs() > 0)
+            {
+                clicked.add(grid[loc.getLocX()-1][loc.getLocY()+1]);
+            }
+                   
+           //directly below
+           if(loc.getLocY() +1 < grid[0].length -1 && hasbeenchecked(grid[loc.getLocX()][loc.getLocY()+1]) == false)
+            if(grid[loc.getLocX()][loc.getLocY()+1].drawBombs() == 0)
+            {
+                Blanks(grid[loc.getLocX()][loc.getLocY()+1]);
+            }
+            else if(grid[loc.getLocX()][loc.getLocY()+1].getBomb() == false && grid[loc.getLocX()][loc.getLocY()+1].drawBombs() > 0)
+            {
+                clicked.add(grid[loc.getLocX()][loc.getLocY()+1]);
+            }
+                   
+           //bottom right
+           if(loc.getLocX() +1 < grid.length -1 && loc.getLocY() +1 < grid[0].length -1 && hasbeenchecked(grid[loc.getLocX()+1][loc.getLocY()+1]) == false)
+            if(grid[loc.getLocX()+1][loc.getLocY()+1].drawBombs() == 0)
+            {
+               Blanks(grid[loc.getLocX()+1][loc.getLocY()+1]);
+            }
+            else if(grid[loc.getLocX()+1][loc.getLocY()+1].getBomb() == false && grid[loc.getLocX()+1][loc.getLocY()+1].drawBombs() > 0)
+            {
+               clicked.add(grid[loc.getLocX()+1][loc.getLocY()+1]);
+            }
+        
+   }
     
     //the main Event listeners I plan to use are MouseClicked and ActionPerformed. If I have the time I would also like to add some keylistener functions, like p to pause
     public void mousePressed(MouseEvent evt)
@@ -350,7 +348,7 @@ public class Main implements MouseListener, ActionListener, KeyListener
         }
         else
         {
-            clicklocations.add(new ClickLocation(ygrid,xgrid));
+            clicked.add(new Locations(ygrid,xgrid,false));
         }
         // System.out.println(""+ grid[ygrid][xgrid].drawBombs());
         
@@ -360,6 +358,8 @@ public class Main implements MouseListener, ActionListener, KeyListener
             needscheck.clear();
             needscheck.add(grid[ygrid][xgrid]);
             Blanks();
+            clicked();
+            beenchecked.clear();
         }
         
         
@@ -418,7 +418,7 @@ public class Main implements MouseListener, ActionListener, KeyListener
             startgame = false;
             endgame = false;
             time = 0;
-            clicklocations.clear();
+            beenchecked.clear();
             flagarray.clear();
             randomizeBombs();
             g.updateClickLocations(clicklocations);

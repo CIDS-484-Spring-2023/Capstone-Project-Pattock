@@ -23,6 +23,12 @@ public class Locations
             bomb = isbomb;
         }
     }
+    
+    public Locations(int locx,int locy)
+    {
+        x = locx;
+        y = locy;
+    }
 
     //all methods below are basic get methods
     public int getLocX()
@@ -45,12 +51,7 @@ public class Locations
         return blank;
     }
 
-    public int getNumBombs()
-    {
-        return numbombs;
-    }
-
-    //methods below deal with making a space a bomb
+    //below methods deal with making a space a bomb
     public void makeBomb()
     {
         bomb = true;
@@ -70,5 +71,4 @@ public class Locations
     {
         return numbombs;
     }
-
 }
