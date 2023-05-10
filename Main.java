@@ -228,21 +228,19 @@ public class Main implements MouseListener, ActionListener, KeyListener
     }
     
    //checks if spaces around clicked blank space -- is the clear blanks logic
-   public void Blanks()
+   public void Blanks(Locations loc)
    {
-          while(needscheck.size() > 0)
+
+       if(loc.drawBombs() > 0)
        {
-           
-           Locations loc = needscheck.get(0);
-           
-           //System.out.println("test" + index + i);
-           
-           //top left
+           return;
+       }
+
            if(loc.getLocX() -1 > 0 && loc.getLocY() -1 > 0 && hasbeenchecked(grid[loc.getLocX()-1][loc.getLocY()-1]) == false)
             if(grid[loc.getLocX()-1][loc.getLocY()-1].drawBombs() == 0)
             {
                 //System.out.println(" " + needscheck.get(0).getLocX() + needscheck.get(0).getLocY());
-                needscheck.add(grid[loc.getLocX()-1][loc.getLocY()-1]);
+                Blanks(grid[loc.getLocX()-1][loc.getLocY()-1]);
             } 
             else if(grid[loc.getLocX()-1][loc.getLocY()-1].getBomb() == false && grid[loc.getLocX()-1][loc.getLocY()-1].drawBombs() > 0)
             {
@@ -253,7 +251,7 @@ public class Main implements MouseListener, ActionListener, KeyListener
            if(loc.getLocY() -1 > 0 && hasbeenchecked(grid[loc.getLocX()][loc.getLocY()-1]) == false)
             if(grid[loc.getLocX()][loc.getLocY()-1].drawBombs() == 0)
             {
-                needscheck.add(grid[loc.getLocX()][loc.getLocY()-1]);
+                Blanks(grid[loc.getLocX()][loc.getLocY()-1]);
             }
             else if(grid[loc.getLocX()][loc.getLocY()-1].getBomb() == false && grid[loc.getLocX()][loc.getLocY()-1].drawBombs() > 0)
             {
@@ -264,7 +262,7 @@ public class Main implements MouseListener, ActionListener, KeyListener
            if(loc.getLocX() +1 < grid.length -1 && loc.getLocY() -1 > 0 && hasbeenchecked(grid[loc.getLocX()+1][loc.getLocY()-1]) == false)
             if(grid[loc.getLocX()+1][loc.getLocY()-1].drawBombs() == 0)
             {
-                needscheck.add(grid[loc.getLocX()+1][loc.getLocY()-1]);
+                Blanks(grid[loc.getLocX()+1][loc.getLocY()-1]);
             }
             else if(grid[loc.getLocX()+1][loc.getLocY()-1].getBomb() == false && grid[loc.getLocX()+1][loc.getLocY()-1].drawBombs() > 0)
             {
@@ -275,7 +273,7 @@ public class Main implements MouseListener, ActionListener, KeyListener
            if(loc.getLocX() -1 > 0 && hasbeenchecked(grid[loc.getLocX()-1][loc.getLocY()]) == false)
             if(grid[loc.getLocX()-1][loc.getLocY()].drawBombs() == 0)
             {
-                needscheck.add(grid[loc.getLocX()-1][loc.getLocY()]);
+                Blanks(grid[loc.getLocX()-1][loc.getLocY()]);
             }
             else if(grid[loc.getLocX()-1][loc.getLocY()].getBomb() == false && grid[loc.getLocX()-1][loc.getLocY()].drawBombs() > 0)
             {
@@ -286,7 +284,7 @@ public class Main implements MouseListener, ActionListener, KeyListener
            if(loc.getLocX() +1 < grid.length -1 && hasbeenchecked(grid[loc.getLocX()+1][loc.getLocY()]) == false)
             if(grid[loc.getLocX()+1][loc.getLocY()].drawBombs() == 0)
             {
-                needscheck.add(grid[loc.getLocX()+1][loc.getLocY()]);
+                Blanks(grid[loc.getLocX()+1][loc.getLocY()]);
             }
             else if(grid[loc.getLocX()+1][loc.getLocY()].getBomb() == false && grid[loc.getLocX()+1][loc.getLocY()].drawBombs() > 0)
             {
@@ -297,7 +295,7 @@ public class Main implements MouseListener, ActionListener, KeyListener
            if(loc.getLocX() -1 > 0 && loc.getLocY() +1 < grid[0].length -1 && hasbeenchecked(grid[loc.getLocX()-1][loc.getLocY()+1]) == false)
             if(grid[loc.getLocX()-1][loc.getLocY()+1].drawBombs() == 0)
             {
-                needscheck.add(grid[loc.getLocX()-1][loc.getLocY()+1]);
+                Blanks(grid[loc.getLocX()-1][loc.getLocY()+1]);
             }
             else if(grid[loc.getLocX()-1][loc.getLocY()+1].getBomb() == false && grid[loc.getLocX()-1][loc.getLocY()+1].drawBombs() > 0)
             {
@@ -308,36 +306,24 @@ public class Main implements MouseListener, ActionListener, KeyListener
            if(loc.getLocY() +1 < grid[0].length -1 && hasbeenchecked(grid[loc.getLocX()][loc.getLocY()+1]) == false)
             if(grid[loc.getLocX()][loc.getLocY()+1].drawBombs() == 0)
             {
-                needscheck.add(grid[loc.getLocX()][loc.getLocY()+1]);
+                Blanks(grid[loc.getLocX()][loc.getLocY()+1]);
             }
             else if(grid[loc.getLocX()][loc.getLocY()+1].getBomb() == false && grid[loc.getLocX()][loc.getLocY()+1].drawBombs() > 0)
             {
                 clicked.add(grid[loc.getLocX()][loc.getLocY()+1]);
             }
                    
-            //bottom right
+           //bottom right
            if(loc.getLocX() +1 < grid.length -1 && loc.getLocY() +1 < grid[0].length -1 && hasbeenchecked(grid[loc.getLocX()+1][loc.getLocY()+1]) == false)
             if(grid[loc.getLocX()+1][loc.getLocY()+1].drawBombs() == 0)
             {
-                  needscheck.add(grid[loc.getLocX()+1][loc.getLocY()+1]);
+               Blanks(grid[loc.getLocX()+1][loc.getLocY()+1]);
             }
             else if(grid[loc.getLocX()+1][loc.getLocY()+1].getBomb() == false && grid[loc.getLocX()+1][loc.getLocY()+1].drawBombs() > 0)
             {
                clicked.add(grid[loc.getLocX()+1][loc.getLocY()+1]);
             }
-          
-           beenchecked.add(loc);
-           
-           needscheck.remove(loc);
-           
-       }
-       
-       /*
-       for(int index = 0; index < beenchecked.size(); index++)
-           {
-               clicklocations.add(new ClickLocation(beenchecked.get(index).getLocX(),beenchecked.get(index).getLocY()));   
-           }
-       */
+        
    }
     
     //the main Event listeners I plan to use are MouseClicked and ActionPerformed. If I have the time I would also like to add some keylistener functions, like p to pause
